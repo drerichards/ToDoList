@@ -38,7 +38,8 @@ public class MainActivityFragment extends Fragment {
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1,
                 toDoItems);
         listView = (ListView) container.findViewById(android.R.id.list);
-        setListAdapter(adapter);
+//
+//      setListAdapter(adapter);
         addButton = (Button) container.findViewById(R.id.addButton);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
