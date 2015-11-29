@@ -15,13 +15,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button addButton;
+    ImageButton addButton;
     protected ArrayList<String> toDoItems = new ArrayList<>();
     protected ArrayAdapter adapter;
 
@@ -31,12 +32,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
-                toDoItems);
+        adapter = new CustomAdapter(this, toDoItems);
         final ListView listView = (ListView) findViewById(android.R.id.list);//call to xml
 
 
-        addButton = (Button) findViewById(R.id.addButton);
+        addButton = (ImageButton) findViewById(R.id.addButton);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
