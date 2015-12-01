@@ -3,11 +3,14 @@ package com.andrerichards.andre.to_dolist;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.media.Image;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,8 +26,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     ImageButton addButton;
-    protected ArrayList<String> toDoItems = new ArrayList<>();
-    protected ArrayAdapter adapter;
+
+    private CustomAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +35,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        adapter = new CustomAdapter(this, toDoItems);
+        adapter = new CustomAdapter();
         final ListView listView = (ListView) findViewById(android.R.id.list);//call to xml
+
 
 
         addButton = (ImageButton) findViewById(R.id.addButton);
@@ -51,8 +55,11 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 String newItems = inputField.getText().toString();
+//                                Log.d("flow", "Saved");
                                 listView.setAdapter(adapter);
-                                toDoItems.add(newItems);
+
+                                adapter.getArrayList().add(newItems);
+
                                 adapter.notifyDataSetChanged();
                             }
                         });
@@ -80,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                                 //recalls the adapter that links to listview in xml
                                 listView.setAdapter(adapter);
                                 //takes the new edit and sets it to the existing parent position or index of array
-                                toDoItems.set(position, newEditItem);
+                                adapter.getArrayList().set(position, newEditItem);
                                 adapter.notifyDataSetChanged();
                             }
                         });
@@ -88,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {//
                                 //removes clicked item from its position or index in the array
-                                toDoItems.remove(position);
+                                adapter.getArrayList().remove(position);
                                 adapter.notifyDataSetChanged();
                             }
                         });
