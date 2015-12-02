@@ -9,7 +9,9 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:id="@+id/checkIcon"
-        android:src="@drawable/check" />
+        android:src="@drawable/check"
+        android:layout_gravity="center_vertical"
+        android:paddingRight="10dp" />
 
     <TextView
         android:layout_width="wrap_content"

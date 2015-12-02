@@ -35,10 +35,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        adapter = new CustomAdapter();
+        adapter = new CustomAdapter(this);
         final ListView listView = (ListView) findViewById(android.R.id.list);//call to xml
-
-
 
         addButton = (ImageButton) findViewById(R.id.addButton);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -57,9 +55,7 @@ public class MainActivity extends AppCompatActivity {
                                 String newItems = inputField.getText().toString();
 //                                Log.d("flow", "Saved");
                                 listView.setAdapter(adapter);
-
                                 adapter.getArrayList().add(newItems);
-
                                 adapter.notifyDataSetChanged();
                             }
                         });
@@ -71,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(
                 new AdapterView.OnItemLongClickListener() {
                     @Override
-                    public boolean onItemLongClick(AdapterView<?> parent, View view,
+                    public boolean onItemLongClick(final AdapterView<?> parent, View view,
                                                    final int position, long id) {
                         //create Dialog for edits
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -79,9 +75,16 @@ public class MainActivity extends AppCompatActivity {
                         builder.setMessage("Make a Change?");
                         final EditText inputEditField = new EditText(getBaseContext());
                         builder.setView(inputEditField);
+                        //converts index text to string
+                        String itemToEdit = String.valueOf(parent.getItemAtPosition(position));
+                        //sets input field to old text
+                        inputEditField.setText(itemToEdit);
+                        //moves cursor to end of text
+                        inputEditField.setSelection(itemToEdit.length());
                         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
                                 //intakes edit entry
                                 String newEditItem = inputEditField.getText().toString();
                                 //recalls the adapter that links to listview in xml

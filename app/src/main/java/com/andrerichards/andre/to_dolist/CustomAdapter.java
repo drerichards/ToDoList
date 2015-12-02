@@ -17,26 +17,30 @@ import java.util.ArrayList;
 class CustomAdapter extends BaseAdapter {
 
     private ArrayList<String> toDoItems = new ArrayList();
-    private Context context;
+    private LayoutInflater listInflater;
+
+    public CustomAdapter(Context context){
+        listInflater = LayoutInflater.from(context);
+    }
 
     @Override
     public int getCount() {
-        return 0;
+        return toDoItems.size();
+
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return toDoItems.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater listInflater = LayoutInflater.from(context);
         View customView = listInflater.inflate(R.layout.custom_row, parent, false);
 
         String singleListItem = (String) getItem(position);
