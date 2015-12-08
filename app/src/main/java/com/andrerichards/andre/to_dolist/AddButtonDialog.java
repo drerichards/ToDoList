@@ -43,6 +43,7 @@ public class AddButtonDialog implements AdapterView.OnItemLongClickListener {
         });
     }
 
+
     public boolean listEditDelete(final ListView listView, final CustomAdapter adapter, final Context mainContext) {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
