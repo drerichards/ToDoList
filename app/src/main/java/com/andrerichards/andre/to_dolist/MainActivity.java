@@ -3,11 +3,15 @@ package com.andrerichards.andre.to_dolist;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.media.Image;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,80 +19,29 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
-import java.util.ArrayList;
+public class MainActivity extends FragmentActivity {
 
-public class MainActivity extends AppCompatActivity {
-
-    Button addButton;
-    protected ArrayList<String> toDoItems = new ArrayList<>();
-    protected ArrayAdapter adapter;
+    private ImageButton addButton;
+    private CustomAdapter adapter;
+    private ListView listView;
+    private Context mainContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
-                toDoItems);
-        final ListView listView = (ListView) findViewById(android.R.id.list);//call to xml
-
-
-        addButton = (Button) findViewById(R.id.addButton);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.addButton:
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        builder.setTitle("Add a New Task");
-                        builder.setMessage("What would you like to do?");
-                        final EditText inputField = new EditText(getBaseContext());
-                        builder.setView(inputField);
-                        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String newItems = inputField.getText().toString();
-                                listView.setAdapter(adapter);
-                                toDoItems.add(newItems);
-                                adapter.notifyDataSetChanged();
-                            }
-                        });
-                        builder.setNegativeButton("Cancel", null);
-                        builder.create().show();
-                    }
-            }
-        });
-    listView.setOnItemLongClickListener(
-            new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view,
-                                               final int position, long id) {
-                    //create Dialog for edits
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setTitle("Edit Task");
-                    builder.setMessage("Make a Change?");
-                    final EditText inputEditField = new EditText(getBaseContext());
-                    builder.setView(inputEditField);
-                    builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //intakes edit entry
-                            String newEditItem = inputEditField.getText().toString();
-                            //recalls the adapter that links to listview in xml
-                            listView.setAdapter(adapter);
-                            //takes the new edit and sets it to the existing parent position or index of array
-                            toDoItems.set(position, newEditItem);
-                            adapter.notifyDataSetChanged();
-                        }
-                    });
-                    builder.setNegativeButton("Cancel", null);
-                    builder.create().show();
-                    return false;
-                }
-            });
+//        setSupportActionBar(toolbar);
+        adapter = new CustomAdapter(this);
+        listView = (ListView) findViewById(android.R.id.list);//call to xml
+        mainContext = this;
+        addButton = (ImageButton) findViewById(R.id.addButton);
+        AddButtonDialog addButtonDialog = new AddButtonDialog();
+        addButtonDialog.addButtonDialog(addButton, adapter, listView, mainContext);
+        addButtonDialog.listEditDelete(listView, adapter, mainContext);
     }
 
 
